@@ -11,6 +11,11 @@
 # production
 /build
 
+# editor swapfiles
+.sw?
+.*.sw?
+*~
+
 # misc
 .DS_Store
 .env.local
