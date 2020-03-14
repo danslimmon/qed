@@ -7,12 +7,6 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -28,11 +22,55 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.board {
+  min-height: 100vh;
+}
+
+.column {
+  border: thin black solid;
+  min-height: 100%;
+}
+
+.column-sym {
+  background-color: red;
+}
+
+.column-hyp {
+  background-color: yellow;
+}
+
+.column-act {
+  background-color: blue;
+}
+
+.card {
+  margin: 4px;
+  padding: 4px;
+}
+
+.card-sym {
+  background-color: pink;
+}
+
+.card-hyp {
+  background-color: lightyellow;
+}
+
+.card-act {
+  background-color: lightblue;
+}
+
+.cardTitle {
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+.cardDescription {
+}
+
+.card input,
+.card textarea {
+  width: 100%;
+  border: none;
+  display: inline-block;
 }
