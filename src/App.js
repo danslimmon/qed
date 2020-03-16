@@ -80,9 +80,19 @@ class Card extends React.Component {
     this.setState({enteredDescription: e.target.value});
   }
 
+  divClasses() {
+    let classes = [
+      "card",
+      "card-" + this.props.type,
+      "card-" + (this.props.selected ? "selected" : "deselected"),
+      "card-" + (this.props.surfaced ? "surfaced" : "desurfaced")
+    ];
+    return classes.join(" ");
+  }
+
   renderDeselected() {
     return (
-      <div className={"card card-" + this.props.type + " card-deselected"} onClick={this.handleClick}>
+      <div className={this.divClasses()} onClick={this.handleClick}>
         <div className="cardTitle">{this.props.title}</div>
         <div className="cardDescription">{this.props.description}</div>
       </div>
@@ -91,7 +101,7 @@ class Card extends React.Component {
 
   renderSelected() {
     return (
-      <div className={"card card-" + this.props.type + " card-selected"} onClick={this.handleClick}>
+      <div className={this.divClasses()} onClick={this.handleClick}>
         <form onSubmit={this.handleSubmit}>
           <TextInput
             name="title"
@@ -130,7 +140,7 @@ class Column extends React.Component {
         title={cardData.title}
         description={cardData.description}
         selected={this.props.selectedCard === cardData.cardID}
-        surfaced={this.props.surfacedCards}
+        surfaced={this.props.surfacedCards.includes(cardData.cardID)}
 
         onCardSelect={this.props.onCardSelect}
         onCardUpdate={this.props.onCardUpdate}

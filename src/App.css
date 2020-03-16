@@ -60,6 +60,14 @@
   background-color: lightblue;
 }
 
+.card-surfaced {
+  z-index: 3
+}
+
+.card-desurfaced {
+  z-index: 1
+}
+
 .cardTitle {
   font-size: 16pt;
   font-weight: bold;
@@ -77,14 +85,12 @@
 
 .cardOverlay {
   position: fixed;
-  width: 100vh;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
   z-index: 2;
-  background-color: #00000020;
+  background-color: #000000a0;
 }
 
 .cardOverlay-hidden {
