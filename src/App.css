@@ -68,11 +68,11 @@
 .cardDescription {
 }
 
-.card input,
+.card input[type="text"],
 .card textarea {
   width: 100%;
   border: none;
-  display: inline-block;
+  background-color: white;
 }
 
 .cardOverlay {
@@ -84,7 +84,7 @@
   right: 0;
   bottom: 0;
   z-index: 2;
-  background-color: #00000040;
+  background-color: #00000020;
 }
 
 .cardOverlay-hidden {

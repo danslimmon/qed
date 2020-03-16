@@ -24,9 +24,8 @@ function TextareaInput(props) {
         name={props.name}
         default={props.default}
         onChange={props.onChange}
-      >
-        {props.value}
-      </textarea>
+        defaultValue={props.value}
+      />
     </div>
   );
 }
@@ -60,38 +59,6 @@ class Card extends React.Component {
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
   }
 
-  renderDeselected() {
-    return (
-      <div className={"card card-" + this.props.type + " card-immutable"} onClick={this.handleClick}>
-        <div className="cardTitle">{this.props.title}</div>
-        <div className="cardDescription">{this.props.description}</div>
-      </div>
-    );
-  }
-
-  renderSelected() {
-    return (
-      <div className={"card card-" + this.props.type + " card-mutable"} onClick={this.handleClick}>
-        <form onSubmit={this.handleSubmit}>
-          <TextInput
-            name="title"
-            className="cardTitle"
-            default="New Symptom"
-            value={this.state.enteredTitle}
-            onChange={this.handleTitleChange}
-          />
-          <TextareaInput
-            name="description"
-            className="cardDescription"
-            default="An inference-free description of a fact we've observed regarding the problem under investigation."
-            value={this.state.enteredDescription}
-            onChange={this.handleDescriptionChange}
-          />
-        </form>
-      </div>
-    );
-  }
-
   handleClick(e) {
     // bubble the event up to whatever's managing state
     this.onCardSelect({target: this});
@@ -113,8 +80,40 @@ class Card extends React.Component {
     this.setState({enteredDescription: e.target.value});
   }
 
+  renderDeselected() {
+    return (
+      <div className={"card card-" + this.props.type + " card-deselected"} onClick={this.handleClick}>
+        <div className="cardTitle">{this.props.title}</div>
+        <div className="cardDescription">{this.props.description}</div>
+      </div>
+    );
+  }
+
+  renderSelected() {
+    return (
+      <div className={"card card-" + this.props.type + " card-selected"} onClick={this.handleClick}>
+        <form onSubmit={this.handleSubmit}>
+          <TextInput
+            name="title"
+            className="cardTitle"
+            default="New Symptom"
+            value={this.state.enteredTitle}
+            onChange={this.handleTitleChange}
+          />
+          <TextareaInput
+            name="description"
+            className="cardDescription"
+            default="An inference-free description of a fact we've observed regarding the problem under investigation."
+            value={this.state.enteredDescription}
+            onChange={this.handleDescriptionChange}
+          />
+        </form>
+      </div>
+    );
+  }
+
   render() {
-    if (this.state.isSelected) {
+    if (this.props.selected) {
       return this.renderSelected();
     }
     return this.renderDeselected();
@@ -125,11 +124,12 @@ class Column extends React.Component {
   render() {
     let cardComponents = this.props.cards.map((cardData) => {return (
       <Card
+        type={this.props.type}
         key={cardData.cardID}
         cardID={cardData.cardID}
         title={cardData.title}
         description={cardData.description}
-        selected={this.props.selectedCard === this.props.cardID}
+        selected={this.props.selectedCard === cardData.cardID}
         surfaced={this.props.surfacedCards}
 
         onCardSelect={this.props.onCardSelect}
@@ -147,7 +147,10 @@ class Column extends React.Component {
 
 function CardOverlay(props) {
   return (
-    <div className={"cardOverlay cardOverlay-" + (props.shown ? "shown" : "hidden")} />
+    <div
+      className={"cardOverlay cardOverlay-" + (props.shown ? "shown" : "hidden")}
+      onClick={props.onOverlayClick}
+    />
   );
 }
 
@@ -203,7 +206,7 @@ class Board extends React.Component {
 
     return (
       <div className="board">
-        <CardOverlay onClick={this.handleOverlayClick} shown={this.state.overlayShown} />
+        <CardOverlay onOverlayClick={this.handleOverlayClick} shown={this.state.overlayShown} />
         <div className="board row">
           {columns}
         </div>
@@ -213,22 +216,24 @@ class Board extends React.Component {
 
   // Returns the list of card IDs that should be surfaced, given the ID of the selected card.
   getSurfaced(selectedCard) {
-    return [];
+    return [selectedCard];
   }
 
   // Handles the event of the CardOverlay being clicked
   handleOverlayClick(e) {
     this.setState({
+      selectedCard: null,
       overlayShown: false
     });
-    // deselect card
   }
 
   // Handles the event of a Card being selected.
+  // 
+  // The target of this event is a <Card /> component.
   handleCardSelect(e) {
     console.log("card selected: " + e.target.props.cardID);
     this.setState({
-      selectedCard: e.target.cardID,
+      selectedCard: e.target.props.cardID,
       overlayShown: true
     });
     // desurface all (unrelated) cards
