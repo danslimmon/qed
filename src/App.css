@@ -74,3 +74,19 @@
   border: none;
   display: inline-block;
 }
+
+.cardOverlay {
+  position: fixed;
+  width: 100vh;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  background-color: #00000040;
+}
+
+.cardOverlay-hidden {
+  display: none;
+}

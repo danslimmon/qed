@@ -36,7 +36,16 @@ class Card extends React.Component {
     super(props);
 
     this.state = {
-      isFocused: false,
+      // cards can be selected or unselected, surfaced or desurfaced.
+      //
+      // "selected" means a card has been clicked by the user and not yet deselected by clicking
+      // elsewhere. a selected card can be edited, and the edits are saved when the card is
+      // deselected.
+      //
+      // "surfaced" means a card is raised above the CardOverlay. cards related to the currently
+      // selected card are surfaced in order to make their relevance clear.
+      selected: this.props.selected,
+      surfaced: this.props.surfaced,
 
       // entered* are the current value in the text inputs, which may be different from props.title
       // and props.description after a change has been made but before the form is submitted.
@@ -44,27 +53,25 @@ class Card extends React.Component {
       enteredDescription: props.description
     };
 
+    this.onCardSelect = this.props.onCardSelect;
+
     this.handleClick = this.handleClick.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
   }
 
-  handleClick() {
-    this.setState({isFocused: !this.state.isFocused});
-  }
-
-  renderDefocused() {
+  renderDeselected() {
     return (
-      <div className={"card card-" + this.props.type + " card-defocused"} onClick={this.handleClick}>
+      <div className={"card card-" + this.props.type + " card-immutable"} onClick={this.handleClick}>
         <div className="cardTitle">{this.props.title}</div>
         <div className="cardDescription">{this.props.description}</div>
       </div>
     );
   }
 
-  renderFocused() {
+  renderSelected() {
     return (
-      <div className={"card card-" + this.props.type + " card-focused"} onClick={this.handleClick}>
+      <div className={"card card-" + this.props.type + " card-mutable"} onClick={this.handleClick}>
         <form onSubmit={this.handleSubmit}>
           <TextInput
             name="title"
@@ -85,9 +92,9 @@ class Card extends React.Component {
     );
   }
 
-  // Handles submitting of the form inside a focused card.
-  handleSubmit(e) {
-    e.preventDefault();
+  handleClick(e) {
+    // bubble the event up to whatever's managing state
+    this.onCardSelect({target: this});
   }
 
   // Handles a change to the card's title.
@@ -107,74 +114,133 @@ class Card extends React.Component {
   }
 
   render() {
-    if (this.state.isFocused) {
-      return this.renderFocused();
+    if (this.state.isSelected) {
+      return this.renderSelected();
     }
-    return this.renderDefocused();
+    return this.renderDeselected();
   }
 }
 
 class Column extends React.Component {
   render() {
-    let cards;
-    switch (this.props.type) {
-      case "hyp":
-        cards = (
-          <Card
-            title="blibbity blobbity"
-            description="This is a hypothesis about our observed symptoms."
-            type={this.props.type}
-            key="mnopqr"
-          />
-        );
-        break;
-      case "act":
-        cards = [
-          {
-            title: "lorem ipsum",
-            key: "abcdef",
-            description: "This is an action that we're taking to rule out some hypothesis.",
-          },
-          {
-            title: "dolor sit amet",
-            key: "ghijkl",
-            description: "This is a research action that doesn't relate to any specific hypothesis but should help us generate more hypotheses.",
-          },
-        ].map((item) => {
-          return (
-            <Card
-              title={item.title}
-              description={item.description}
-              type={this.props.type}
-              key={item.key}
-            />
-          );
-        });
-        break;
-      case "sym":
-        break;
-      default:
-        console.log("error: rendered column with unknown type " + this.props.type);
-        cards = [];
-    }
+    let cardComponents = this.props.cards.map((cardData) => {return (
+      <Card
+        key={cardData.cardID}
+        cardID={cardData.cardID}
+        title={cardData.title}
+        description={cardData.description}
+        selected={this.props.selectedCard === this.props.cardID}
+        surfaced={this.props.surfacedCards}
+
+        onCardSelect={this.props.onCardSelect}
+        onCardUpdate={this.props.onCardUpdate}
+      />
+    )});
 
     return (
       <div className={"column column-" + this.props.type + " col-sm"}>
-        {cards}
+        {cardComponents}
       </div>
     );
   }
 }
 
+function CardOverlay(props) {
+  return (
+    <div className={"cardOverlay cardOverlay-" + (props.shown ? "shown" : "hidden")} />
+  );
+}
+
 class Board extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedCard: null,
+      overlayShown: false,
+      cards: {
+        sym: [],
+        hyp: [
+          {
+            cardID: "mnopqr",
+            title: "blibbity blobbity",
+            description: "This is a hypothesis about our observed symptoms."
+          }
+        ],
+        act: [
+          {
+            cardID: "abcdef",
+            title: "lorem ipsum",
+            description: "This is an action that we're taking to rule out some hypothesis.",
+          },
+          {
+            cardID: "ghijkl",
+            title: "dolor sit amet",
+            description: "This is a research action that doesn't relate to any specific hypothesis but should help us generate more hypotheses.",
+          }
+        ]
+      }
+    }
+
+    this.handleOverlayClick = this.handleOverlayClick.bind(this);
+    this.handleCardSelect = this.handleCardSelect.bind(this);
+    this.handleCardUpdate = this.handleCardUpdate.bind(this);
+  }
+
   render() {
+    let columns = ["sym", "hyp", "act"].map((colType) => (
+      <Column
+        type={colType}
+        key={colType}
+        cards={this.state.cards[colType]}
+        selectedCard={this.state.selectedCard}
+        surfacedCards={this.getSurfaced(this.state.selectedCard)}
+
+        onCardSelect={this.handleCardSelect}
+        onCardUpdate={this.handleCardUpdate}
+      />
+    ));
+
     return (
-      <div className="board row">
-        <Column type="sym" />
-        <Column type="hyp" />
-        <Column type="act" />
+      <div className="board">
+        <CardOverlay onClick={this.handleOverlayClick} shown={this.state.overlayShown} />
+        <div className="board row">
+          {columns}
+        </div>
       </div>
     );
+  }
+
+  // Returns the list of card IDs that should be surfaced, given the ID of the selected card.
+  getSurfaced(selectedCard) {
+    return [];
+  }
+
+  // Handles the event of the CardOverlay being clicked
+  handleOverlayClick(e) {
+    this.setState({
+      overlayShown: false
+    });
+    // deselect card
+  }
+
+  // Handles the event of a Card being selected.
+  handleCardSelect(e) {
+    console.log("card selected: " + e.target.props.cardID);
+    this.setState({
+      selectedCard: e.target.cardID,
+      overlayShown: true
+    });
+    // desurface all (unrelated) cards
+  }
+
+  // Handles the event of a Card being updated.
+  //
+  // This triggers when a user has made changes to a the card's attributes and those changes have
+  // been finalized.
+  handleCardUpdate(e) {
+    console.log("card updated" + e.target.prop.cardID);
+    // get the current state and alter the relevant card
   }
 }
 
