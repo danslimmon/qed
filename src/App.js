@@ -57,9 +57,13 @@ class Card extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleClick(e) {
+    if (this.props.selected) {
+      return;
+    }
     // bubble the event up to whatever's managing state
     this.onCardSelect({target: this});
   }
@@ -78,6 +82,10 @@ class Card extends React.Component {
   // value. Submitting of a completed form is handled by handleSubmit().
   handleDescriptionChange(e) {
     this.setState({enteredDescription: e.target.value});
+  }
+
+  handleSubmit(e) {
+    e.preventDefault()
   }
 
   divClasses() {
@@ -131,6 +139,20 @@ class Card extends React.Component {
 }
 
 class Column extends React.Component {
+  colName() {
+    switch (this.props.type) {
+      case "sym":
+        return "Symptoms";
+      case "hyp":
+        return "Hypotheses";
+      case "act":
+        return "Actions";
+      default:
+        console.log("Unknown column type '" + this.props.type + "' passed to <Column />");
+        return "Unknown Column";
+    }
+  }
+
   render() {
     let cardComponents = this.props.cards.map((cardData) => {return (
       <Card
@@ -149,6 +171,7 @@ class Column extends React.Component {
 
     return (
       <div className={"column column-" + this.props.type + " col-sm"}>
+        <h1>{this.colName()}</h1>
         {cardComponents}
       </div>
     );
@@ -171,28 +194,26 @@ class Board extends React.Component {
     this.state = {
       selectedCard: null,
       overlayShown: false,
-      cards: {
-        sym: [],
-        hyp: [
-          {
-            cardID: "mnopqr",
-            title: "blibbity blobbity",
-            description: "This is a hypothesis about our observed symptoms."
-          }
-        ],
-        act: [
-          {
-            cardID: "abcdef",
-            title: "lorem ipsum",
-            description: "This is an action that we're taking to rule out some hypothesis.",
-          },
-          {
-            cardID: "ghijkl",
-            title: "dolor sit amet",
-            description: "This is a research action that doesn't relate to any specific hypothesis but should help us generate more hypotheses.",
-          }
-        ]
-      }
+      cards: [
+        {
+          cardID: "abcdef",
+          cardType: "act",
+          title: "lorem ipsum",
+          description: "This is an action that we're taking to rule out some hypothesis.",
+        },
+        {
+          cardID: "ghijkl",
+          cardType: "act",
+          title: "dolor sit amet",
+          description: "This is a research action that doesn't relate to any specific hypothesis but should help us generate more hypotheses.",
+        },
+        {
+          cardID: "mnopqr",
+          cardType: "hyp",
+          title: "blibbity blobbity",
+          description: "This is a hypothesis about our observed symptoms."
+        }
+      ]
     }
 
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
@@ -200,12 +221,18 @@ class Board extends React.Component {
     this.handleCardUpdate = this.handleCardUpdate.bind(this);
   }
 
+  cardsByType(cardType) {
+    return this.state.cards.filter((cardData) => {
+      return (cardData.cardType === cardType);
+    });
+  }
+
   render() {
     let columns = ["sym", "hyp", "act"].map((colType) => (
       <Column
         type={colType}
         key={colType}
-        cards={this.state.cards[colType]}
+        cards={this.cardsByType(colType)}
         selectedCard={this.state.selectedCard}
         surfacedCards={this.getSurfaced(this.state.selectedCard)}
 

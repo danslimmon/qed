@@ -27,37 +27,14 @@
 }
 
 .column {
-  border: thin black solid;
+  border: medium darkgray solid;
   min-height: 100%;
-}
-
-.column-sym {
-  background-color: red;
-}
-
-.column-hyp {
-  background-color: yellow;
-}
-
-.column-act {
-  background-color: blue;
 }
 
 .card {
   margin: 4px;
   padding: 4px;
-}
-
-.card-sym {
-  background-color: pink;
-}
-
-.card-hyp {
-  background-color: lightyellow;
-}
-
-.card-act {
-  background-color: lightblue;
+  background-color: lightgray;
 }
 
 .card-surfaced {
