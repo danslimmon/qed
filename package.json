@@ -36,7 +36,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint-plugin-flowtype": "^3.13.0",
-    "jquery": "^1.9.1",
+    "jquery": "^3.4.0",
     "popper.js": "^1.16.1",
     "typescript": "^3.8.3"
   }
