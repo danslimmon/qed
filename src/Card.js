@@ -26,8 +26,6 @@ class Card extends React.Component {
     this.onCardSelect = this.props.onCardSelect;
 
     this.handleClick = this.handleClick.bind(this);
-    this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -37,22 +35,6 @@ class Card extends React.Component {
     }
     // bubble the event up to whatever's managing state
     this.onCardSelect({target: this});
-  }
-
-  // Handles a change to the card's title.
-  // 
-  // By change we mean any transient alteration done by the user in the process of entering the
-  // value. Submitting of a completed form is handled by handleSubmit().
-  handleTitleChange(e) {
-    this.setState({enteredTitle: e.target.value});
-  }
-
-  // Handles a change to the card's description.
-  // 
-  // By change we mean any transient alteration done by the user in the process of entering the
-  // value. Submitting of a completed form is handled by handleSubmit().
-  handleDescriptionChange(e) {
-    this.setState({enteredDescription: e.target.value});
   }
 
   handleSubmit(e) {
@@ -79,8 +61,11 @@ class Card extends React.Component {
   }
 
   fieldValue(fieldName) {
+    if (this.props.selectedCardInputValues === undefined) {
+      return this.props[fieldName];
+    }
     if (this.props.selectedCardInputValues[fieldName] === undefined) {
-      return this.props[fieldName]
+      return this.props[fieldName];
     }
     return this.props.selectedCardInputValues[fieldName];
   }
