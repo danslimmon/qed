@@ -76,7 +76,7 @@ it("responds correctly to being clicked", () => {
   });
 
   act(() => {
-    container.querySelector("div.card").dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    Simulate.click(container.querySelector("div.card"));
   });
 
   expect(onCardSelectRan).toBe(true);
