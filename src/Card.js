@@ -4,27 +4,7 @@ import { TextInput, TextareaInput } from './input.js';
 class Card extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      // cards can be selected or unselected, surfaced or desurfaced.
-      //
-      // "selected" means a card has been clicked by the user and not yet deselected by clicking
-      // elsewhere. a selected card can be edited, and the edits are saved when the card is
-      // deselected.
-      //
-      // "surfaced" means a card is raised above the CardOverlay. cards related to the currently
-      // selected card are surfaced in order to make their relevance clear.
-      selected: this.props.selected,
-      surfaced: this.props.surfaced,
-
-      // entered* are the current value in the text inputs, which may be different from props.title
-      // and props.description after a change has been made but before the form is submitted.
-      enteredTitle: props.title,
-      enteredDescription: props.description
-    };
-
     this.onCardSelect = this.props.onCardSelect;
-
     this.handleClick = this.handleClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
