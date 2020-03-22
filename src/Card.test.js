@@ -22,12 +22,13 @@ it("renders correctly when surfaced but not selected", () => {
   act(() => {
     render(<Card
       cardData={{
+        cardID: "abcdef",
         cardType: "sym",
         title: "lorem ipsum",
         description: "dolor sit amet"
       }}
-      selected={false}
-      surfaced={true}
+      selectedCard={{cardID: "ghijkl"}}
+      surfacedCards={["abcdef", "ghijkl"]}
       selectedCardInputValues={{}}
     />, container);
   });
@@ -41,12 +42,13 @@ it("renders correctly when desurfaced", () => {
   act(() => {
     render(<Card
       cardData={{
+        cardID: "abcdef",
         cardType: "hyp",
         title: "my desurfaced hypothesis",
         description: "April is the coolest month."
       }}
-      selected={false}
-      surfaced={false}
+      selectedCard={["ghijkl"]}
+      surfacedCards={["ghijkl"]}
       selectedCardInputValues={{
         title: "flibbity bibbity boo"
       }}
@@ -71,12 +73,13 @@ it("responds correctly to being clicked", () => {
   act(() => {
     render(<Card
       cardData={{
-        type: "act",
+        cardID: "ghijkl",
+        cardType: "act",
         title: cardTitle,
         description: "some action card"
       }}
-      selected={false}
-      surfaced={true}
+      selectedCard={null}
+      surfacedCards={["abcdef", "ghijkl"]}
       onCardSelect={ocs}
     />, container);
   });
@@ -93,12 +96,13 @@ it("renders when selected", () => {
   act(() => {
     render(<Card
       cardData={{
-        type: "sym",
+        cardID: "abcdef",
+        cardType: "sym",
         title: "Everything is broken!!!",
         description: "We accidentally the website"
       }}
-      selected={true}
-      surfaced={true}
+      selectedCard={{cardID: "abcdef"}}
+      surfacedCards={["abcdef", "ghijkl"]}
       selectedCardInputValues={{}}
     />, container);
   });
@@ -111,12 +115,13 @@ it("renders changes to fields when selected", () => {
   act(() => {
     render(<Card
       cardData={{
-        type: "hyp",
+        cardID: "abcdef",
+        cardType: "hyp",
         title: "ab",
         description: "de"
       }}
-      selected={true}
-      surfaced={true}
+      selectedCard={{cardID: "abcdef"}}
+      surfacedCards={["abcdef", "ghijkl"]}
       selectedCardInputValues={{title: "abc", description: "def"}}
     />, container);
   });
@@ -129,12 +134,13 @@ it("renders changes to fields when selected", () => {
   act(() => {
     render(<Card
       cardData={{
+        cardID: "abcdef",
         cardType: "hyp",
         title: "ab",
         description: "de"
       }}
-      selected={true}
-      surfaced={true}
+      selectedCard={{cardID: "abcdef"}}
+      surfacedCards={["abcdef", "ghijkl"]}
       selectedCardInputValues={{title: "abc"}}
     />, container);
   });
@@ -154,12 +160,13 @@ it("executes the OnChange callback correctly", () => {
   act(() => {
     render(<Card
       cardData={{
+        cardID: "abcdef",
         cardType: "sym",
         title: "pangram",
         description: "a quick brown fox jumps over the lazy dog"
       }}
-      selected={true}
-      surfaced={true}
+      selectedCard={{cardID: "abcdef"}}
+      surfacedCards={["abcdef", "ghijkl"]}
       selectedCardInputValues={{}}
       onCardChange={occ}
     />, container);

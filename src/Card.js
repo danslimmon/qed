@@ -9,8 +9,21 @@ class Card extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  isSelected() {
+    return (this.props.selectedCard && this.props.cardData.cardID === this.props.selectedCard.cardID);
+  }
+
+  isSurfaced() {
+    for (let i=0; i<this.props.surfacedCards.length; i++) {
+      if (this.props.cardData.cardID === this.props.surfacedCards[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   handleClick(e) {
-    if (this.props.selected) {
+    if (this.isSelected()) {
       return;
     }
     // bubble the event up to whatever's managing state
@@ -25,8 +38,8 @@ class Card extends React.Component {
     let classes = [
       "card",
       "card-" + this.props.cardData.cardType,
-      "card-" + (this.props.selected ? "selected" : "deselected"),
-      "card-" + (this.props.surfaced ? "surfaced" : "desurfaced")
+      "card-" + (this.isSelected() ? "selected" : "deselected"),
+      "card-" + (this.isSurfaced() ? "surfaced" : "desurfaced")
     ];
     return classes.join(" ");
   }
@@ -72,10 +85,7 @@ class Card extends React.Component {
   }
 
   render() {
-    if (this.props.selected) {
-      return this.renderSelected();
-    }
-    return this.renderDeselected();
+    return this.isSelected() ? this.renderSelected() : this.renderDeselected();
   }
 }
 

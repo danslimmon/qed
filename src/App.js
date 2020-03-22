@@ -24,6 +24,12 @@ class Board extends React.Component {
       overlayShown: false,
       cards: [
         {
+          cardID: "mnopqr",
+          cardType: "hyp",
+          title: "blibbity blobbity",
+          description: "This is a hypothesis about our observed symptoms."
+        },
+        {
           cardID: "abcdef",
           cardType: "act",
           title: "lorem ipsum",
@@ -34,12 +40,6 @@ class Board extends React.Component {
           cardType: "act",
           title: "dolor sit amet",
           description: "This is a research action that doesn't relate to any specific hypothesis but should help us generate more hypotheses.",
-        },
-        {
-          cardID: "mnopqr",
-          cardType: "hyp",
-          title: "blibbity blobbity",
-          description: "This is a hypothesis about our observed symptoms."
         }
       ]
     }
@@ -50,11 +50,12 @@ class Board extends React.Component {
   }
 
   getCard(cardID) {
-    this.state.cards.forEach((cardData) => {
+    for (let i=0; i<this.state.cards.length; i++) {
+      let cardData = this.state.cards[i];
       if (cardData.cardID === cardID) {
         return cardData;
       }
-    });
+    }
     return null;
   }
 
@@ -98,14 +99,14 @@ class Board extends React.Component {
 
   // Handles the event of the CardOverlay being clicked
   handleOverlayClick(e) {
-    if (this.state.selectedCard === null) {
+    if (this.state.selectedCardID === null) {
       return;
     }
 
     this.setState((state, props) => {
       // Merge the data entered by the user into the selected card's data
       for (let i=0; i<state.cards.length; i++) {
-        if (state.cards[i].cardID === state.selectedCard) {
+        if (state.cards[i].cardID === state.selectedCardID) {
           state.cards[i] = {
             ...state.cards[i],
             ...state.selectedCardInputValues
@@ -115,7 +116,7 @@ class Board extends React.Component {
       };
 
       // Go back to having no selected card
-      state.selectedCard = null;
+      state.selectedCardID = null;
       state.selectedCardInputValues = {};
       state.overlayShown = false;
 
@@ -127,27 +128,25 @@ class Board extends React.Component {
   // 
   // The target of this event is a <Card /> component.
   handleCardSelect(e) {
+    let target = e.target;
     this.setState((state, props) => {
       return {
-        selectedCardID: e.target.props.cardID,
+        selectedCardID: target.props.cardData.cardID,
         overlayShown: true
       }
     });
-    // desurface all (unrelated) cards
   }
 
   // Handles the event of a Card being changed (input onChange, not submit).
   // 
   // The target of this event is a <Card /> component's input element.
   handleCardChange(e) {
-    e = e.nativeEvent;
-    console.log('a: ' + e.target);
+    let target = e.target;
     this.setState((state, props) => {
-      console.log('b: ' + e.target);
       return {
         selectedCardInputValues: {
           ...state.selectedCardInputValues,
-          [e.target.name]: e.target.value
+          [target.name]: target.value
         }
       };
     });

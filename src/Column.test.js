@@ -30,5 +30,26 @@ it("renders empty", () => {
   expect(container.querySelector(".addCard")).not.toBe(null);
 });
 
+it("determines when a given card is selected", () => {
+  act(() => {
+    let card = {
+      cardID: "abcdef",
+      cardType: "hyp",
+      title: "the system is down",
+      description: "come on everybody and fhgwhgads"
+    }
+    render(<Column
+      type={"hyp"}
+      cards={[card]}
+      selectedCard={card}
+      surfacedCards={["abcdef"]}
+    />, container);
+  });
+  expect(container.querySelector(".card").classList).toContain("card-selected");
+  expect(container.querySelector(".card").classList).toContain("card-surfaced");
+  expect(container.querySelector(".card").classList).not.toContain("card-deselected");
+  expect(container.querySelector(".card").classList).not.toContain("card-desurfaced");
+});
+
 it("renders with multiple cards", () => {
 });

@@ -24,8 +24,8 @@ class Column extends React.Component {
           type={this.props.type}
           key={cardData.cardID}
           cardData={cardData}
-          selected={this.props.selectedCard && this.prop.selectedCard.cardID === cardData.cardID}
-          surfaced={this.props.surfacedCards.includes(cardData.cardID)}
+          selectedCard={this.props.selectedCard}
+          surfacedCards={this.props.surfacedCards}
           selectedCardInputValues={this.props.selectedCardInputValues}
 
           onCardSelect={this.props.onCardSelect}
