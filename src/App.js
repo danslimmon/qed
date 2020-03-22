@@ -16,10 +16,10 @@ class Board extends React.Component {
     super(props);
 
     this.state = {
-      selectedCard: null,
+      selectedCardID: null,
       // selectedCardInputValues holds the latest values input by the user that have not been saved
-      // yet. If it is {}, no unsaved changes are present in the form. Otherwise it has a key for each
-      // field that is unsaved.
+      // yet. If it is {}, no unsaved changes are present in the form. Otherwise it has a key for
+      // each field that is unsaved.
       selectedCardInputValues: {},
       overlayShown: false,
       cards: [
@@ -49,6 +49,15 @@ class Board extends React.Component {
     this.handleCardChange = this.handleCardChange.bind(this);
   }
 
+  getCard(cardID) {
+    this.state.cards.forEach((cardData) => {
+      if (cardData.cardID === cardID) {
+        return cardData;
+      }
+    });
+    return null;
+  }
+
   cardsByType(cardType) {
     return this.state.cards.filter((cardData) => {
       return (cardData.cardType === cardType);
@@ -56,13 +65,15 @@ class Board extends React.Component {
   }
 
   render() {
+    let selectedCard = this.getCard(this.state.selectedCardID);
+
     let columns = ["sym", "hyp", "act"].map((colType) => (
       <Column
         type={colType}
         key={colType}
         cards={this.cardsByType(colType)}
-        selectedCard={this.state.selectedCard}
-        surfacedCards={this.getSurfaced(this.state.selectedCard)}
+        selectedCard={selectedCard}
+        surfacedCards={this.getSurfaced(this.state.selectedCardID)}
         selectedCardInputValues={this.state.selectedCardInputValues}
 
         onCardSelect={this.handleCardSelect}
@@ -118,7 +129,7 @@ class Board extends React.Component {
   handleCardSelect(e) {
     this.setState((state, props) => {
       return {
-        selectedCard: e.target.props.cardID,
+        selectedCardID: e.target.props.cardID,
         overlayShown: true
       }
     });

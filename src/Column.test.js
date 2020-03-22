@@ -2,7 +2,7 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act, Simulate } from "react-dom/test-utils";
 
-import AddCard from "./AddCard.js";
+import Column from "./Column.js";
 
 let container = null;
 beforeEach(() => {
@@ -18,13 +18,17 @@ afterEach(() => {
   container = null;
 });
 
-it("renders", () => {
+it("renders empty", () => {
   act(() => {
-    render(<AddCard
-      type={"hyp"}
-      selectedCard={{}}
+    render(<Column
+      type={"act"}
+      cards={[]}
     />, container);
   });
-  expect(container.querySelector(".addCard").classList).toContain("addCard-hyp");
-  expect(container.querySelector(".addCard").textContent).toMatch(/Hypothesis/);
+  expect(container.querySelector("h1").textContent).toMatch(/Actions/);
+  expect(container.querySelector(".column").classList).toContain("column-act");
+  expect(container.querySelector(".addCard")).not.toBe(null);
+});
+
+it("renders with multiple cards", () => {
 });

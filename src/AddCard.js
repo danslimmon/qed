@@ -1,18 +1,14 @@
 import React from 'react';
-import { TextInput, TextareaInput } from './input.js';
 
 class AddCard extends React.Component {
   typeToWord() {
     switch(this.props.type) {
       case "sym":
         return "Symptom";
-        break;
       case "hyp":
         return "Hypothesis";
-        break;
       case "act":
         return "Action";
-        break;
       default:
         return "Unknown";
     }
@@ -27,9 +23,16 @@ class AddCard extends React.Component {
   }
 
   render() {
+    let isRelated = true;
+    if (!this.props.selectedCard) {
+      isRelated = false;
+    } else if (this.props.selectedCard.cardType !== this.props.type) {
+      isRelated = false;
+    }
+
     return (
       <div className={this.divClasses()} onClick={this.props.onClick}>
-        ➕ New {this.typeToWord()}
+        <span role="img" aria-label="plus">➕</span> New {isRelated ? "Related " : ""}{this.typeToWord()}
       </div>
     );
   }

@@ -21,9 +21,11 @@ afterEach(() => {
 it("renders correctly when surfaced but not selected", () => {
   act(() => {
     render(<Card
-      type={"sym"}
-      title={"lorem ipsum"}
-      description={"dolor sit amet"}
+      cardData={{
+        cardType: "sym",
+        title: "lorem ipsum",
+        description: "dolor sit amet"
+      }}
       selected={false}
       surfaced={true}
       selectedCardInputValues={{}}
@@ -38,9 +40,11 @@ it("renders correctly when surfaced but not selected", () => {
 it("renders correctly when desurfaced", () => {
   act(() => {
     render(<Card
-      type={"hyp"}
-      title={"my desurfaced hypothesis"}
-      description={"April is the coolest month."}
+      cardData={{
+        cardType: "hyp",
+        title: "my desurfaced hypothesis",
+        description: "April is the coolest month."
+      }}
       selected={false}
       surfaced={false}
       selectedCardInputValues={{
@@ -61,14 +65,16 @@ it("responds correctly to being clicked", () => {
 
   function ocs(e) {
     onCardSelectRan = true;
-    targetTitle = e.target.props.title;
+    targetTitle = e.target.props.cardData.title;
   }
 
   act(() => {
     render(<Card
-      type={"act"}
-      title={cardTitle}
-      description={"some action card"}
+      cardData={{
+        type: "act",
+        title: cardTitle,
+        description: "some action card"
+      }}
       selected={false}
       surfaced={true}
       onCardSelect={ocs}
@@ -86,9 +92,11 @@ it("responds correctly to being clicked", () => {
 it("renders when selected", () => {
   act(() => {
     render(<Card
-      type={"sym"}
-      title={"Everything is broken!!!"}
-      description={"We accidentally the website"}
+      cardData={{
+        type: "sym",
+        title: "Everything is broken!!!",
+        description: "We accidentally the website"
+      }}
       selected={true}
       surfaced={true}
       selectedCardInputValues={{}}
@@ -102,9 +110,11 @@ it("renders when selected", () => {
 it("renders changes to fields when selected", () => {
   act(() => {
     render(<Card
-      type={"hyp"}
-      title={"ab"}
-      description={"de"}
+      cardData={{
+        type: "hyp",
+        title: "ab",
+        description: "de"
+      }}
       selected={true}
       surfaced={true}
       selectedCardInputValues={{title: "abc", description: "def"}}
@@ -118,9 +128,11 @@ it("renders changes to fields when selected", () => {
 
   act(() => {
     render(<Card
-      type={"hyp"}
-      title={"ab"}
-      description={"de"}
+      cardData={{
+        cardType: "hyp",
+        title: "ab",
+        description: "de"
+      }}
       selected={true}
       surfaced={true}
       selectedCardInputValues={{title: "abc"}}
@@ -141,9 +153,11 @@ it("executes the OnChange callback correctly", () => {
 
   act(() => {
     render(<Card
-      type={"sym"}
-      title={"pangram"}
-      description={"a quick brown fox jumps over the lazy dog"}
+      cardData={{
+        cardType: "sym",
+        title: "pangram",
+        description: "a quick brown fox jumps over the lazy dog"
+      }}
       selected={true}
       surfaced={true}
       selectedCardInputValues={{}}

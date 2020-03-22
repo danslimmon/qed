@@ -1,4 +1,5 @@
 import React from 'react';
+import AddCard from './AddCard.js';
 import Card from './Card.js';
 
 class Column extends React.Component {
@@ -17,25 +18,26 @@ class Column extends React.Component {
   }
 
   render() {
-    let cardComponents = this.props.cards.map((cardData) => {return (
-      <Card
-        type={this.props.type}
-        key={cardData.cardID}
-        cardID={cardData.cardID}
-        title={cardData.title}
-        description={cardData.description}
-        selected={this.props.selectedCard === cardData.cardID}
-        surfaced={this.props.surfacedCards.includes(cardData.cardID)}
-        selectedCardInputValues={this.props.selectedCardInputValues}
+    let cardComponents = this.props.cards.map((cardData) => {
+      return (
+        <Card
+          type={this.props.type}
+          key={cardData.cardID}
+          cardData={cardData}
+          selected={this.props.selectedCard && this.prop.selectedCard.cardID === cardData.cardID}
+          surfaced={this.props.surfacedCards.includes(cardData.cardID)}
+          selectedCardInputValues={this.props.selectedCardInputValues}
 
-        onCardSelect={this.props.onCardSelect}
-        onCardChange={this.props.onCardChange}
-      />
-    )});
+          onCardSelect={this.props.onCardSelect}
+          onCardChange={this.props.onCardChange}
+        />
+      );
+    });
 
     return (
       <div className={"column column-" + this.props.type + " col-sm"}>
         <h1>{this.colName()}</h1>
+        <AddCard type={this.props.type} />
         {cardComponents}
       </div>
     );
