@@ -36,21 +36,13 @@ class Card extends React.Component {
 
   divClasses() {
     let classes = [
+      "row",
       "card",
       "card-" + this.props.cardData.cardType,
       "card-" + (this.isSelected() ? "selected" : "deselected"),
       "card-" + (this.isSurfaced() ? "surfaced" : "desurfaced")
     ];
     return classes.join(" ");
-  }
-
-  renderDeselected() {
-    return (
-      <div className={this.divClasses()} onClick={this.handleClick}>
-        <div className="cardTitle">{this.props.cardData.title}</div>
-        <div className="cardDescription">{this.props.cardData.description}</div>
-      </div>
-    );
   }
 
   fieldValue(fieldName) {
@@ -61,6 +53,15 @@ class Card extends React.Component {
       return this.props.cardData[fieldName];
     }
     return this.props.selectedCardInputValues[fieldName];
+  }
+
+  renderDeselected() {
+    return (
+      <div className={this.divClasses()} onClick={this.handleClick}>
+        <div className="cardTitle">{this.props.cardData.title}</div>
+        <div className="cardDescription">{this.props.cardData.description}</div>
+      </div>
+    );
   }
 
   renderSelected() {

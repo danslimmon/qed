@@ -16,6 +16,7 @@ class AddCard extends React.Component {
 
   divClasses() {
     let classes = [
+      "row",
       "addCard",
       "addCard-" + this.props.type,
     ];
@@ -26,7 +27,7 @@ class AddCard extends React.Component {
     let isRelated = true;
     if (!this.props.selectedCard) {
       isRelated = false;
-    } else if (this.props.selectedCard.cardType !== this.props.type) {
+    } else if (this.props.selectedCard.cardType === this.props.type) {
       isRelated = false;
     }
 

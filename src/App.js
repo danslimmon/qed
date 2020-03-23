@@ -1,15 +1,8 @@
 import React from 'react';
 import './App.css';
-import Column from './Column.js';
 
-function CardOverlay(props) {
-  return (
-    <div
-      className={"cardOverlay cardOverlay-" + (props.shown ? "shown" : "hidden")}
-      onClick={props.onOverlayClick}
-    />
-  );
-}
+import Overlay from './Overlay.js';
+import Column from './Column.js';
 
 class Board extends React.Component {
   constructor(props) {
@@ -83,9 +76,9 @@ class Board extends React.Component {
     ));
 
     return (
-      <div className="board">
-        <CardOverlay onOverlayClick={this.handleOverlayClick} shown={this.state.overlayShown} />
-        <div className="board row">
+      <div className="board row">
+        <Overlay onOverlayClick={this.handleOverlayClick} shown={this.state.overlayShown} />
+        <div className="row">
           {columns}
         </div>
       </div>
@@ -97,7 +90,7 @@ class Board extends React.Component {
     return [selectedCard];
   }
 
-  // Handles the event of the CardOverlay being clicked
+  // Handles the event of the Overlay being clicked
   handleOverlayClick(e) {
     if (this.state.selectedCardID === null) {
       return;

@@ -75,15 +75,12 @@
 }
 
 .addCard {
+  position: relative;
   margin: 4px;
   padding: 4px;
   border: thin black dashed;
   background-color: lightgray;
   font-size: 16pt;
   /* AddCard is always surfaced. */
-  z-index: 3;
-}
-
-.addCard-surfaced {
   z-index: 3;
 }

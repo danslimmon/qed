@@ -35,9 +35,12 @@ class Column extends React.Component {
     });
 
     return (
-      <div className={"column column-" + this.props.type + " col-sm"}>
+      <div className={"column column-" + this.props.type + " col col-sm"}>
         <h1>{this.colName()}</h1>
-        <AddCard type={this.props.type} />
+        <AddCard
+          type={this.props.type}
+          selectedCard={this.props.selectedCard}
+        />
         {cardComponents}
       </div>
     );
