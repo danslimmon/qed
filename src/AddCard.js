@@ -1,6 +1,11 @@
 import React from 'react';
 
 class AddCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
   typeToWord() {
     switch(this.props.type) {
       case "sym":
@@ -32,10 +37,14 @@ class AddCard extends React.Component {
     }
 
     return (
-      <div className={this.divClasses()} onClick={this.props.onClick}>
+      <div className={this.divClasses()} onClick={this.handleClick}>
         <span role="img" aria-label="plus">➕</span> New {isRelated ? "Related " : ""}{this.typeToWord()}
       </div>
     );
+  }
+
+  handleClick(e) {
+    this.props.onAddCard({target: this});
   }
 }
 

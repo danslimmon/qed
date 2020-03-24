@@ -40,6 +40,8 @@ class Column extends React.Component {
         <AddCard
           type={this.props.type}
           selectedCard={this.props.selectedCard}
+
+          onAddCard={this.props.onAddCard}
         />
         {cardComponents}
       </div>

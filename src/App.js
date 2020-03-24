@@ -1,5 +1,7 @@
-import React from 'react';
 import './App.css';
+
+import React from 'react';
+import { v4 as uuid } from 'uuid';
 
 import Overlay from './Overlay.js';
 import Column from './Column.js';
@@ -40,6 +42,7 @@ class Board extends React.Component {
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
     this.handleCardSelect = this.handleCardSelect.bind(this);
     this.handleCardChange = this.handleCardChange.bind(this);
+    this.handleAddCard = this.handleAddCard.bind(this);
   }
 
   getCard(cardID) {
@@ -61,6 +64,8 @@ class Board extends React.Component {
   render() {
     let selectedCard = this.getCard(this.state.selectedCardID);
 
+    console.log("rerendering Board", this.state.cards[0]);
+
     let columns = ["sym", "hyp", "act"].map((colType) => (
       <Column
         type={colType}
@@ -72,6 +77,7 @@ class Board extends React.Component {
 
         onCardSelect={this.handleCardSelect}
         onCardChange={this.handleCardChange}
+        onAddCard={this.handleAddCard}
       />
     ));
 
@@ -143,6 +149,43 @@ class Board extends React.Component {
         }
       };
     });
+  }
+
+  // Saves the currently selected card's contents to the DB.
+  saveSelectedCard() {
+    if (!this.state.selectedCardID) {
+      console.log("no selected card to save");
+      return;
+    }
+    console.log("would save card " + this.state.selectedCardID + " to database");
+  }
+
+  // Adds a new card of the given type.
+  //
+  // The new card will appear at the top of the cards list, and will be selected.
+  newCard(cardType) {
+    let newCardData = {
+      cardID: uuid(),
+      cardType: cardType,
+      title: "",
+      description: ""
+    };
+
+    this.setState((state, props) => {
+      state.cards.unshift(newCardData);
+      state.selectedCardID = newCardData.cardID;
+      state.selectedCardInputValues = {}
+      return state;
+    });
+  }
+
+  // Handles the event of the AddCard button being clicked.
+  // 
+  // The target of this event is an <AddCard /> component.
+  handleAddCard(e) {
+    let target = e.target;
+    this.saveSelectedCard();
+    this.newCard(target.props.type);
   }
 }
 
