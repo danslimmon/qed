@@ -1,12 +1,22 @@
 import React from 'react';
-import { TextInput, TextareaInput } from './input.js';
+import { noop } from './util.js'
 
 class Card extends React.Component {
   constructor(props) {
     super(props);
+    this.titleInput = React.createRef();
     this.onCardSelect = this.props.onCardSelect;
     this.handleClick = this.handleClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    // focus title field of newly created card
+    // 
+    // this should be the only situation where this conditional holds. fingers crossed emoji.
+    if (this.isSelected() && this.props.cardData.title === "" && this.props.cardData.description === "" && !this.props.selectedCardInputValues.keys) {
+      this.titleInput.current.focus();
+    }
   }
 
   isSelected() {
@@ -68,18 +78,29 @@ class Card extends React.Component {
     return (
       <div className={this.divClasses()} onClick={this.handleClick}>
         <form onSubmit={this.handleSubmit} onChange={this.props.onCardChange}>
-          <TextInput
-            name="title"
-            className="cardTitle"
-            default="New Symptom"
-            value={this.fieldValue("title")}
-          />
-          <TextareaInput
-            name="description"
-            className="cardDescription"
-            default="An inference-free description of a fact we've observed regarding the problem under investigation."
-            value={this.fieldValue("description")}
-          />
+          <div className="form-group">
+            <input
+              ref={this.titleInput}
+              className="cardTitle"
+              type="text"
+              name="title"
+              value={this.fieldValue("title")}
+              // Avoids the annoying and baseless warnings about "you provided a `value` prop to a form
+              // field without an `onChange` handler.
+              onChange={noop}
+            />
+          </div>
+          <div className="form-group">
+            <textarea
+              className="cardDescription"
+              name="description"
+              /*defaultValue="An inference-free description of a fact we've observed regarding the problem"*/
+              value={this.fieldValue("description")}
+              // Avoids the annoying and baseless warnings about "you provided a `value` prop to a form
+              // field without an `onChange` handler.
+              onChange={noop}
+            />
+          </div>
         </form>
       </div>
     );
