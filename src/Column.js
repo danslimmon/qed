@@ -1,4 +1,6 @@
 import React from 'react';
+import Draggable from 'react-draggable';
+
 import AddCard from './AddCard.js';
 import Card from './Card.js';
 
@@ -18,19 +20,27 @@ class Column extends React.Component {
   }
 
   render() {
-    let cardComponents = this.props.cards.map((cardData) => {
+    const cardComponents = this.props.cards.map((cardData) => {
       return (
-        <Card
-          type={this.props.type}
+        <Draggable
+          {...this.props.dragHandlers}
           key={cardData.cardID}
-          cardData={cardData}
-          selectedCard={this.props.selectedCard}
-          surfacedCards={this.props.surfacedCards}
-          selectedCardInputValues={this.props.selectedCardInputValues}
+          axis="y"
+        >
+          <div>
+          <Card
+            type={this.props.type}
+            key={cardData.cardID}
+            cardData={cardData}
+            selectedCard={this.props.selectedCard}
+            surfacedCards={this.props.surfacedCards}
+            selectedCardInputValues={this.props.selectedCardInputValues}
 
-          onCardSelect={this.props.onCardSelect}
-          onCardChange={this.props.onCardChange}
-        />
+            onCardSelect={this.props.onCardSelect}
+            onCardChange={this.props.onCardChange}
+          />
+          </div>
+        </Draggable>
       );
     });
 
