@@ -51,5 +51,32 @@ it("determines when a given card is selected", () => {
   expect(container.querySelector(".card").classList).not.toContain("card-desurfaced");
 });
 
-it("renders with multiple cards", () => {
+it("orders cards correctly", () => {
+  act(() => {
+    const cards = [
+      {
+        cardID: "abcdef",
+        cardType: "hyp",
+        title: "this card is discarded",
+        description: "this hypothesis is no longer considered valid",
+        discarded: true
+      },
+      {
+        cardID: "ghijkl",
+        cardType: "hyp",
+        title: "this card is NOT discarded",
+        description: "this hypothesis may still hold water",
+        discarded: false
+      }
+    ];
+    render(<Column
+      type={"hyp"}
+      cards={cards}
+      surfacedCards={[]}
+    />, container);
+  });
+
+  expect(container.querySelectorAll(".card").length).toBe(2);
+  const nodes = container.querySelectorAll(".cardTitle");
+  expect(nodes[nodes.length-1].textContent).toBe("this card is discarded");
 });

@@ -19,7 +19,17 @@ class Column extends React.Component {
   }
 
   render() {
-    const cardComponents = this.props.cards.map((cardData) => {
+    let cards = this.props.cards.slice();
+    cards.sort((a, b) => {
+      if (a.discarded && !b.discarded) {
+        return 1;
+      }
+      if (!a.discarded && b.discarded) {
+        return -1;
+      }
+      return 0;
+    });
+    let cardComponents = cards.map((cardData) => {
       return (
         <Card
           type={this.props.type}
