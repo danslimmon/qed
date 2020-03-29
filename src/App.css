@@ -45,6 +45,11 @@
   z-index: 1
 }
 
+.card-discarded {
+  color: gray;
+  background-color: darkgray;
+}
+
 .cardTitle {
   font-size: 16pt;
   font-weight: bold;
@@ -58,6 +63,12 @@
   width: 100%;
   border: none;
   background-color: white;
+}
+
+.cardControlBar {
+  padding: 4px;
+  margin: 4px;
+  display: block;
 }
 
 .cardOverlay {

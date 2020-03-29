@@ -184,3 +184,34 @@ it("executes the OnChange callback correctly", () => {
 
   expect(onChangeTarget.value).toBe("eat the pliers with love. pleasure burns!");
 });
+
+
+it("has a working control bar", () => {
+  let ocdParam;
+  function ocd(cardID) {
+    ocdParam = cardID;
+  }
+
+  act(() => {
+    render(<Card
+      cardData={{
+        cardID: "abcdef",
+        cardType: "sym",
+        title: "pangram",
+        description: "a quick brown fox jumps over the lazy dog"
+      }}
+      selectedCard={{cardID: "abcdef"}}
+      surfacedCards={["abcdef", "ghijkl"]}
+      selectedCardInputValues={{}}
+      onCardDiscard={ocd}
+    />, container);
+  });
+
+  expect(container.querySelector(".cardControlBar .discard")).toBeTruthy();
+
+  act(() => {
+    container.querySelector(".cardControlBar .discard").click();
+  });
+
+  expect(ocdParam).toBe("abcdef");
+});

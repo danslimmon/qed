@@ -42,6 +42,7 @@ class Board extends React.Component {
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
     this.handleCardSelect = this.handleCardSelect.bind(this);
     this.handleCardChange = this.handleCardChange.bind(this);
+    this.handleCardDiscard = this.handleCardDiscard.bind(this);
     this.handleAddCard = this.handleAddCard.bind(this);
   }
 
@@ -75,6 +76,7 @@ class Board extends React.Component {
 
         onCardSelect={this.handleCardSelect}
         onCardChange={this.handleCardChange}
+        onCardDiscard={this.handleCardDiscard}
         onAddCard={this.handleAddCard}
       />
     ));
@@ -94,8 +96,7 @@ class Board extends React.Component {
     return [selectedCard];
   }
 
-  // Handles the event of the Overlay being clicked
-  handleOverlayClick(e) {
+  finalizeCardChanges() {
     if (this.state.selectedCardID === null) {
       return;
     }
@@ -121,6 +122,11 @@ class Board extends React.Component {
     });
   }
 
+  // Handles the event of the Overlay being clicked
+  handleOverlayClick(e) {
+    this.finalizeCardChanges();
+  }
+
   // Handles the event of a Card being selected.
   // 
   // The target of this event is a <Card /> component.
@@ -138,7 +144,7 @@ class Board extends React.Component {
   // 
   // The target of this event is a <Card /> component's input element.
   handleCardChange(e) {
-    let target = e.target;
+    const target = e.target;
     this.setState((state, props) => {
       return {
         selectedCardInputValues: {
@@ -146,6 +152,21 @@ class Board extends React.Component {
           [target.name]: target.value
         }
       };
+    });
+  }
+
+  // Handles the event of a Card being discarded.
+  // 
+  // The parameter passed to this is the ID of the discarded card.
+  handleCardDiscard(cardID) {
+    this.finalizeCardChanges();
+    this.setState((state, props) => {
+      for (let i=0; i<state.cards.length; i++) {
+        if (state.cards[i].cardID === cardID) {
+          state.cards[i].discarded = true;
+        }
+      }
+      return state;
     });
   }
 

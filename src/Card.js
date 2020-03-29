@@ -1,6 +1,16 @@
 import React from 'react';
 import { noop } from './util.js'
 
+class CardControlBar extends React.Component {
+  render() {
+    return (
+      <div className="cardControlBar row" onClick={this.props.onClick}>
+        <button className="discard"><span role="img" aria-label="red X">❌</span></button>
+      </div>
+    );
+  }
+}
+
 class Card extends React.Component {
   constructor(props) {
     super(props);
@@ -32,6 +42,10 @@ class Card extends React.Component {
     return false;
   }
 
+  isDiscarded() {
+    return this.props.cardData.discarded;
+  }
+
   handleClick(e) {
     if (this.isSelected()) {
       return;
@@ -52,6 +66,9 @@ class Card extends React.Component {
       "card-" + (this.isSelected() ? "selected" : "deselected"),
       "card-" + (this.isSurfaced() ? "surfaced" : "desurfaced")
     ];
+    if (this.isDiscarded()) {
+      classes.push("card-discarded")
+    };
     return classes.join(" ");
   }
 
@@ -77,6 +94,9 @@ class Card extends React.Component {
   renderSelected() {
     return (
       <div className={this.divClasses()} onClick={this.handleClick}>
+        <CardControlBar
+          onClick={() => {this.props.onCardDiscard(this.props.cardData.cardID);}}
+        />
         <form onSubmit={this.handleSubmit} onChange={this.props.onCardChange}>
           <div className="form-group">
             <input

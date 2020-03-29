@@ -31,6 +31,7 @@ class Column extends React.Component {
 
           onCardSelect={this.props.onCardSelect}
           onCardChange={this.props.onCardChange}
+          onCardDiscard={this.props.onCardDiscard}
         />
       );
     });
