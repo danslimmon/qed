@@ -29,6 +29,19 @@ class Card extends React.Component {
     }
   }
 
+  titlePlaceholder() {
+    switch(this.props.cardData.cardType) {
+    case "sym":
+      return "New Symptom";
+    case "hyp":
+      return "New Hypothesis";
+    case "act":
+      return "New Action";
+    default:
+      console.log("unknown card type '" + this.props.cardData.cardType + "'");
+    }
+  }
+
   isSelected() {
     return (this.props.selectedCard && this.props.cardData.cardID === this.props.selectedCard.cardID);
   }
@@ -105,6 +118,7 @@ class Card extends React.Component {
               type="text"
               name="title"
               value={this.fieldValue("title")}
+              placeholder={this.titlePlaceholder()}
               // Avoids the annoying and baseless warnings about "you provided a `value` prop to a form
               // field without an `onChange` handler.
               onChange={noop}

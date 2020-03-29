@@ -193,7 +193,8 @@ class Board extends React.Component {
     this.setState((state, props) => {
       state.cards.unshift(newCardData);
       state.selectedCardID = newCardData.cardID;
-      state.selectedCardInputValues = {}
+      state.selectedCardInputValues = {};
+      state.overlayShown = true;
       return state;
     });
   }
