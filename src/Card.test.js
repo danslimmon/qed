@@ -60,6 +60,23 @@ it("renders correctly when desurfaced", () => {
   expect(container.querySelector("div.cardDescription").textContent).toBe("April is the coolest month.");
 })
 
+it("renders correctly when discarded", () => {
+  act(() => {
+    render(<Card
+      cardData={{
+        cardID: "abcdef",
+        cardType: "hyp",
+        title: "my desurfaced hypothesis",
+        description: "April is the coolest month.",
+        discarded: true
+      }}
+      selectedCard={["ghijkl"]}
+      surfacedCards={["ghijkl"]}
+    />, container);
+  });
+  expect(container.querySelector(".card-discarded")).toBeTruthy();
+})
+
 it("responds correctly to being clicked", () => {
   const cardTitle = "whatever";
   let onCardSelectRan = false;
