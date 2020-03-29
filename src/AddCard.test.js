@@ -5,6 +5,7 @@ import { act, Simulate } from "react-dom/test-utils";
 import AddCard from "./AddCard.js";
 
 let container = null;
+
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");

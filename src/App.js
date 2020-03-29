@@ -39,10 +39,6 @@ class Board extends React.Component {
       ]
     }
 
-    this.handleCardDragStart = this.handleCardDragStart.bind(this);
-    this.handleCardDragStop = this.handleCardDragStop.bind(this);
-    this.handleCardDrag = this.handleCardDrag.bind(this);
-
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
     this.handleCardSelect = this.handleCardSelect.bind(this);
     this.handleCardChange = this.handleCardChange.bind(this);
@@ -67,11 +63,6 @@ class Board extends React.Component {
 
   render() {
     const selectedCard = this.getCard(this.state.selectedCardID);
-    const dragHandlers = {
-      onStart: this.handleCardDragStart,
-      onStop: this.handleCardDragStop,
-      onDrag: this.handleCardDrag
-    };
 
     let columns = ["sym", "hyp", "act"].map((colType) => (
       <Column
@@ -82,7 +73,6 @@ class Board extends React.Component {
         surfacedCards={this.getSurfaced(this.state.selectedCardID)}
         selectedCardInputValues={this.state.selectedCardInputValues}
 
-        dragHandlers={dragHandlers}
         onCardSelect={this.handleCardSelect}
         onCardChange={this.handleCardChange}
         onAddCard={this.handleAddCard}
@@ -131,31 +121,10 @@ class Board extends React.Component {
     });
   }
 
-  handleCardDragStart() {
-    console.log("onStart");
-    // The `draggingCard` state lets us recognize when a card is being dragged and abort its click
-    // handler.
-    this.setState({draggingCard: true});
-  };
-
-  handleCardDragStop() {
-    console.log("onStop");
-  };
-
-  handleCardDrag(e, ui) {
-    console.log("onDrag", ui);
-  };
-
   // Handles the event of a Card being selected.
   // 
   // The target of this event is a <Card /> component.
   handleCardSelect(e) {
-    if (this.state.draggingCard) {
-      console.log("onCardSelect aborted because card is being dragged.");
-      this.setState({draggingCard: false});
-      return;
-    }
-
     const target = e.target;
     this.setState((state, props) => {
       return {
