@@ -21,6 +21,8 @@ class AddCard extends React.Component {
 
   divClasses() {
     let classes = [
+      "btn",
+      "btn-block",
       "row",
       "addCard",
       "addCard-" + this.props.type,
@@ -37,9 +39,9 @@ class AddCard extends React.Component {
     }
 
     return (
-      <div className={this.divClasses()} onClick={this.handleClick}>
+      <button type="button" className={this.divClasses()} onClick={this.handleClick}>
         <span role="img" aria-label="plus">➕</span> New {isRelated ? "Related " : ""}{this.typeToWord()}
-      </div>
+      </button>
     );
   }
 

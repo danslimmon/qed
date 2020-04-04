@@ -89,8 +89,9 @@
   position: relative;
   margin: 4px;
   padding: 4px;
-  border: thin black dashed;
+  /* border: thin black dashed; */
   background-color: lightgray;
+  text-align: left;
   font-size: 16pt;
   /* AddCard is always surfaced. */
   z-index: 3;
