@@ -42,6 +42,19 @@ class Card extends React.Component {
     }
   }
 
+  descriptionPlaceholder() {
+    switch(this.props.cardData.cardType) {
+    case "sym":
+      return "A piece of information about the problem that we've obtained by directly observing the system.";
+    case "hyp":
+      return "A plausible, testable explanation for a symptom or group of symptoms.";
+    case "act":
+      return "An action we will take to either falsify one or more hypotheses or deepen our understanding of the problem.";
+    default:
+      console.log("unknown card type '" + this.props.cardData.cardType + "'");
+    }
+  }
+
   isSelected() {
     return (this.props.selectedCard && this.props.cardData.cardID === this.props.selectedCard.cardID);
   }
@@ -128,8 +141,9 @@ class Card extends React.Component {
             <textarea
               className="cardDescription"
               name="description"
-              /*defaultValue="An inference-free description of a fact we've observed regarding the problem"*/
+              rows={4}
               value={this.fieldValue("description")}
+              placeholder={this.descriptionPlaceholder()}
               // Avoids the annoying and baseless warnings about "you provided a `value` prop to a form
               // field without an `onChange` handler.
               onChange={noop}
