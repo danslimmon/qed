@@ -55,7 +55,7 @@ it("renders correctly when desurfaced", () => {
     />, container);
   });
   expect(container.querySelector("div.card").classList).toContain("card-hyp");
-  expect(container.querySelector("div.card").classList).toContain("card-desurfaced");
+  expect(container.querySelector("div.card").classList).not.toContain("card-surfaced");
   expect(container.querySelector("div.cardTitle").textContent).toBe("my desurfaced hypothesis");
   expect(container.querySelector("div.cardDescription").textContent).toBe("April is the coolest month.");
 })

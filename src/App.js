@@ -3,7 +3,6 @@ import './App.css';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 
-import Overlay from './Overlay.js';
 import Column from './Column.js';
 
 class Board extends React.Component {
@@ -39,7 +38,6 @@ class Board extends React.Component {
       ]
     }
 
-    this.handleOverlayClick = this.handleOverlayClick.bind(this);
     this.handleCardSelect = this.handleCardSelect.bind(this);
     this.handleCardChange = this.handleCardChange.bind(this);
     this.handleCardDiscard = this.handleCardDiscard.bind(this);
@@ -83,7 +81,6 @@ class Board extends React.Component {
 
     return (
       <div className="board row">
-        <Overlay onOverlayClick={this.handleOverlayClick} shown={this.state.overlayShown} />
         <div className="row">
           {columns}
         </div>
@@ -120,11 +117,6 @@ class Board extends React.Component {
 
       return state;
     });
-  }
-
-  // Handles the event of the Overlay being clicked
-  handleOverlayClick(e) {
-    this.finalizeCardChanges();
   }
 
   // Handles the event of a Card being selected.

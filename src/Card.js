@@ -60,6 +60,12 @@ class Card extends React.Component {
   }
 
   isSurfaced() {
+    if (!this.props.selectedCard) {
+      return false;
+    }
+    if (this.props.cardData.cardID === this.props.selectedCard.cardID) {
+      return false;
+    }
     for (let i=0; i<this.props.surfacedCards.length; i++) {
       if (this.props.cardData.cardID === this.props.surfacedCards[i]) {
         return true;
@@ -89,9 +95,11 @@ class Card extends React.Component {
       "row",
       "card",
       "card-" + this.props.cardData.cardType,
-      "card-" + (this.isSelected() ? "selected" : "deselected"),
-      "card-" + (this.isSurfaced() ? "surfaced" : "desurfaced")
+      "card-" + (this.isSelected() ? "selected" : "deselected")
     ];
+    if (this.isSurfaced()) {
+      classes.push("card-surfaced");
+    }
     if (this.isDiscarded()) {
       classes.push("card-discarded")
     };

@@ -46,7 +46,6 @@ it("determines when a given card is selected", () => {
     />, container);
   });
   expect(container.querySelector(".card").classList).toContain("card-selected");
-  expect(container.querySelector(".card").classList).toContain("card-surfaced");
   expect(container.querySelector(".card").classList).not.toContain("card-deselected");
   expect(container.querySelector(".card").classList).not.toContain("card-desurfaced");
 });
